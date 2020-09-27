@@ -2,11 +2,12 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const util = require('util');
 
-const api = require('./utils/api.js');
-const generateMarkdown = require('./utils/generateMarkdown.js');
+
+const generateMarkdown = require('./util/generateMarkdown.js');
 
 // array of questions for user
-const questions = [
+const promptUser = () => {
+    return inquirer.prompt([
     {
         type: 'input',
         message: "What is your GitHub username?",
@@ -81,7 +82,8 @@ const questions = [
         choices: ['GNU AGPLv3', 'GNU GPLv3', 'GNU LGPLv3', 'Mozilla Public License 2.0', 'Apache License 2.0', 'MIT License', 'Boost Software License 1.0', 'The Unlicense'],
         name: 'license'
     }
-];
+]);
+};
 
 // function to write README file
 function writeToFile(fileName, data) {
@@ -92,35 +94,14 @@ function writeToFile(fileName, data) {
       
         console.log("Success! Your README.md file has been generated")
     });
-}
-
-const writeFileAsync = util.promisify(writeToFile);
-
-// function to initialize program
-function init() {
-    try {
-
-        // Prompt Inquirer questions
-        const userResponses = await inquirer.prompt(questions);
-        console.log("Your responses: ", userResponses);
-        console.log("Thank you for your responses! Fetching your GitHub data next...");
-    
-        // Call GitHub api for user info
-        const userInfo = await api.getUser(userResponses);
-        console.log("Your GitHub user info: ", userInfo);
-    
-        // Pass Inquirer userResponses and GitHub userInfo to generateMarkdown
-        console.log("Generating your README next...")
-        const markdown = generateMarkdown(userResponses, userInfo);
-        console.log(markdown);
-    
-        // Write markdown to file
-        await writeFileAsync('ExampleREADME.md', markdown);
-
-    } catch (error) {
-        console.log(error);
-    }
 };
 
-// function call to initialize program
-init();
+const writeFile = util.promisify(writeToFile);
+
+// function to initialize program
+promptUser()
+.then(generateMarkdown)
+.then(writeFile)
+.catch(err => {
+    console.log(err);
+});
