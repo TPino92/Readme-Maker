@@ -2,11 +2,11 @@ const inquirer = require('inquirer');
 const fs = require('fs');
 const util = require('util');
 
-
+const api = require('./util/axios.js')
 const generateMarkdown = require('./util/generateMarkdown.js');
 
 // array of questions for user
-const promptUser = () => {
+const questions = () => {
     return inquirer.prompt([
     {
         type: 'input',
@@ -94,14 +94,45 @@ function writeToFile(fileName, data) {
       
         console.log("Success! Your README.md file has been generated")
     });
-};
+}
 
 const writeFile = util.promisify(writeToFile);
 
+//const userResponses = promptUser();
+//const userInfo = api.getUser(userResponses);
+//const markdown = generateMarkdown(userResponses, userInfo);
 // function to initialize program
-promptUser()
-.then(generateMarkdown)
-.then(writeFile)
-.catch(err => {
-    console.log(err);
-});
+//promptUser()
+//.then(api)
+//.then(generateMarkdown)
+//.then(writeFile)
+//.catch(err => {
+    //console.log(err);
+//});
+
+async function init() {
+    try {
+
+        // Prompt Inquirer questions
+        const userResponses = await questions();
+        console.log("Your responses: ", userResponses);
+        console.log("Thank you for your responses! Fetching your GitHub data next...");
+    
+        // Call GitHub api for user info
+        const userInfo = await api.getUser(userResponses);
+        console.log("Your GitHub user info: ", userInfo);
+    
+        // Pass Inquirer userResponses and GitHub userInfo to generateMarkdown
+        console.log("Generating your README next...")
+        const markdown = generateMarkdown(userResponses, userInfo);
+        console.log(markdown);
+    
+        // Write markdown to file
+        writeFile('new-README.md', markdown);
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+init();
