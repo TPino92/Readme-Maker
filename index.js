@@ -86,30 +86,26 @@ const questions = () => {
 };
 
 // function to write README file
-function writeToFile(fileName, data) {
-    fs.writeFile(fileName, data, err => {
+const writeFile = fileContent => {
+    return new Promise((resolve, reject) => {
+      fs.writeFile('new-README.md', fileContent, err => {
+        // if there's an error, reject the Promise and send the error to the Promise's `.catch()` method
         if (err) {
-          return console.log(err);
+          reject(err);
+          // return out of the function here to make sure the Promise doesn't accidentally execute the resolve() function as well
+          return;
         }
-      
-        console.log("Success! Your README.md file has been generated")
+  
+        // if everything went well, resolve the Promise and send the successful data to the `.then()` method
+        resolve({
+          ok: true,
+          message: 'File created!'
+        });
+      });
     });
-}
+};
 
-const writeFile = util.promisify(writeToFile);
-
-//const userResponses = promptUser();
-//const userInfo = api.getUser(userResponses);
-//const markdown = generateMarkdown(userResponses, userInfo);
-// function to initialize program
-//promptUser()
-//.then(api)
-//.then(generateMarkdown)
-//.then(writeFile)
-//.catch(err => {
-    //console.log(err);
-//});
-
+//function to initialize progam
 async function init() {
     try {
 
@@ -124,15 +120,16 @@ async function init() {
     
         // Pass Inquirer userResponses and GitHub userInfo to generateMarkdown
         console.log("Generating your README next...")
-        const markdown = generateMarkdown(userResponses, userInfo);
+        const markdown = await generateMarkdown(userResponses, userInfo);
         console.log(markdown);
     
         // Write markdown to file
-        writeFile('new-README.md', markdown);
+        await writeFile('new-README.md', markdown);
 
     } catch (error) {
         console.log(error);
     }
 };
 
+//call to initialize
 init();
