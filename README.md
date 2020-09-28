@@ -1,12 +1,10 @@
 # Readme-Maker  
-  ![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/Tpino92/Stuff and Things?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/Tpino92/Stuff and Things?style=flat&logo=appveyor)
-  
-  Check out the badges hosted by [shields.io](https://shields.io/).
+  ![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/Tpino92/Readme-Maker?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/Tpino92/Readme-Maker?style=flat&logo=appveyor)
   
   
   ## Description 
   
-  *The what, why, and how:* 
+  *What, Why, and How:* 
   
   This project was designed to generate a README.md for the user. It does so by capturing user input via Node.js then creates a MD file based on that input. This program was designed to make life a little easier for the coder by automating some of the process of creating a README for every project. It was created using NPM, Inquirer and Axios.  
 
@@ -37,7 +35,7 @@
   
   ## License
   
-  GNU AGPLv3
+  Currently none.
   
   ---
   
