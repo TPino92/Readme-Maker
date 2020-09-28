@@ -31,7 +31,7 @@
   
   *Tests for application and how to run them:*
   
-  <iframe src="https://drive.google.com/file/d/1GOjeillixAHBz3CN1TKfibascr2QVxAl/preview" width="640" height="480"></iframe>
+  ![instructional-video](images/readme-gif.gif)
   
   ## License
   
